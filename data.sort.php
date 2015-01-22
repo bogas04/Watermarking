@@ -1,14 +1,14 @@
 <?php
   $secret_key = isset($_GET['secret_key'])?$_GET['secret_key']:"secret";
   $partition_count = isset($_GET['partition_count'])?$_GET['partition_count']:50;
-  $watermark = isset($_GET['watermark'])?$_GET['watermark']:"1011001";
+  $watermark = isset($_GET['watermark'])?$_GET['watermark']:"01011";
 
   function getHash($a) {
     return hexdec(substr(md5($a), 0, 7));
   }
 
   function getDataFrom($table) {
-    $mysqli = new mysqli("localhost", "root", "", "watermarking");
+    $mysqli = new mysqli("localhost", "root", "", "CSV_DB");
   
     if($mysqli->connect_errno) {
       printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -51,13 +51,34 @@
     if($embed) {
       foreach($partitions as $key => $value) { 
         if($watermark[$value['watermarking_bit']] == 1) {
-          krsort($partitions[$key]['records'],SORT_NUMERIC);
+          krsort($partitions[$key]['records']);
         } else {
-          ksort($partitions[$key]['records'],SORT_NUMERIC);
+          ksort($partitions[$key]['records']);
         }
       }
     }
     return $partitions;
+  }
+  function renderTable($records) {
+    echo "<div class='table-container'>
+      <table>
+      <thead>
+        <tr>";
+          foreach(array_keys($records[0]) as $key) {
+            echo "<th> $key </th>";
+          }
+      echo "
+        </tr>>
+      </thead>
+      <tbody>
+    ";
+    foreach($records as $r) {
+      render($r);   
+    }
+    echo "
+      </tbody>
+      </table>
+    </div>";  
   }
   function render($record) {
     foreach($record as $r) {
@@ -71,9 +92,9 @@
   function getFromPartitions($partition, $save = false, $tableName) {
     $new_records = array();
     $mysqli = 0;
-    
+
     if($save) {
-      $mysqli = new mysqli("localhost", "root", "", "watermarking");
+      $mysqli = new mysqli("localhost", "root", "", "CSV_DB");
   
       if($mysqli->connect_errno) {
         printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -98,6 +119,7 @@
         } 
       }
     }
+
     return $new_records;  
   }
 

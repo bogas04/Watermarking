@@ -1,0 +1,32 @@
+
+INSERT INTO `add_50_50` select * from original_addition limit 2333;
+INSERT INTO `add_50_100` select * from original_addition limit 4666;
+INSERT INTO `add_50_200` select * from original_addition limit 4332;
+INSERT INTO `add_50_200` select * from original_addition_2 limit 5000;
+INSERT INTO `add_50_300` select * from original_addition_2;
+INSERT INTO `add_50_300` select * from original_addition_3 limit 5152;
+INSERT INTO `add_50_400` select * from original_addition;
+INSERT INTO `add_50_400` select * from original_addition_2;
+INSERT INTO `add_50_400` select * from original_addition_3 limit 3241;
+
+DELETE FROM `dl_10_50` ORDER BY RAND() LIMIT 2333;
+DELETE FROM `dl_10_85` ORDER BY RAND() LIMIT 3966;
+DELETE FROM `dl_10_90` ORDER BY RAND() LIMIT 4200;
+DELETE FROM `dl_10_95` ORDER BY RAND() LIMIT 4433;
+DELETE FROM `dl_10_97` ORDER BY RAND() LIMIT 4526;
+DELETE FROM `dl_10_99` ORDER BY RAND() LIMIT 4619;
+
+DELETE FROM `dl_50_10` ORDER BY RAND() LIMIT 466;
+DELETE FROM `dl_50_50` ORDER BY RAND() LIMIT 2333;
+DELETE FROM `dl_50_60` ORDER BY RAND() LIMIT 2800;
+DELETE FROM `dl_50_70` ORDER BY RAND() LIMIT 3266;
+DELETE FROM `dl_50_80` ORDER BY RAND() LIMIT 3733;
+DELETE FROM `dl_50_85` ORDER BY RAND() LIMIT 3966;
+DELETE FROM `dl_50_90` ORDER BY RAND() LIMIT 4200;
+DELETE FROM `dl_50_95` ORDER BY RAND() LIMIT 4433;
+DELETE FROM `dl_50_96` ORDER BY RAND() LIMIT 4479;
+DELETE FROM `dl_50_97` ORDER BY RAND() LIMIT 4526;
+DELETE FROM `dl_50_98` ORDER BY RAND() LIMIT 4573;
+DELETE FROM `dl_50_99` ORDER BY RAND() LIMIT 4619;
+
+
