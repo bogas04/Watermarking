@@ -32,6 +32,7 @@ $partitions = hashAndWaterMark($records, false);
 
   <?php
     # GENERATING WATERMARK TABLE
+    $time = microtime(true);
     $extracted_watermark = array();
     foreach($partitions as $index => $data) {
       $increasingCount = 0;
@@ -57,6 +58,7 @@ $partitions = hashAndWaterMark($records, false);
       }
     }
     ksort($extracted_watermark);
+    echo "<div class='timestamp'>Watermark Extraction Time : ".(microtime(true)-$time) ." s</div>"
   ?>
   <p> Now we count the number of 1s and 0s obtained by checking the order of hashes in new database. This will help us extract the watermark </p>
 

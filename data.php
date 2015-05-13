@@ -8,7 +8,9 @@
   }
 
   function getDataFrom($table) {
-    $mysqli = new mysqli("localhost", "root", "", "watermarking");
+    $time = microtime(true);
+    
+    $mysqli = new mysqli("127.0.0.1", "root", "", "watermarking");
   
     if($mysqli->connect_errno) {
       printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -20,11 +22,13 @@
     if ($result = $mysqli->query($query)) {
       $data = $result->fetch_all(MYSQLI_ASSOC);
       $mysqli->close();
+      echo "<div class='timestamp'>getDataFrom Time : " . (microtime(true) - $time). " s </div>";
       return $data;
     }
   }
 
   function hashAndWaterMark($records, $embed = true) {
+    $time = microtime(true);
     global $secret_key;
     global $partition_count;
     global $watermark;
@@ -57,6 +61,7 @@
         }
       }
     }
+    echo "<div class='timestamp'>hashAndWatermark Time : " . (microtime(true) - $time). " s </div>";
     return $partitions;
   }
   function render($record) {
@@ -69,11 +74,12 @@
     }
   }
   function getFromPartitions($partition, $save = false, $tableName) {
+    $time = microtime(true);
     $new_records = array();
     $mysqli = 0;
     
     if($save) {
-      $mysqli = new mysqli("localhost", "root", "", "watermarking");
+      $mysqli = new mysqli("127.0.0.1", "root", "", "watermarking");
   
       if($mysqli->connect_errno) {
         printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -84,10 +90,11 @@
         foreach($p['records'] as $r) {
           $new_records[] = $r; 
           $query = "INSERT INTO $tableName (`uid`, `rec_no`, `fldnam`, `coll_date`, `fldnam_an`, `descript`) VALUES 
-                    ('{$r['uid']}','{$r['rec_no']}','{$r['fldnam']}','{$r['coll_date']}','{$r['fldnam_an']}','{$r['descript']}')";
+                    ('{$r['uid']}','{$r['rec_no']}','{$r['fldnam']}','{$r['coll_date']}','{$r['fldnam_an']}','".$mysqli->real_escape_string($r['descript'])."')";
           if(!$res = $mysqli->query($query)) {
             print_r($res);
-            die("can't save");
+            
+            die($query. ' : '. $mysqli->error. " can't save");
           }
         } 
       }
@@ -98,6 +105,7 @@
         } 
       }
     }
+    echo "<div class='timestamp'>getFromPartitions Time : " . (microtime(true) - $time). " s </div>";
     return $new_records;  
   }
 

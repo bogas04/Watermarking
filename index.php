@@ -1,6 +1,6 @@
 <?php 
 include 'data.php';
-$records = getDataFrom("original");
+$records = getDataFrom("original_addition_2");
 $partitions = hashAndWaterMark($records); 
 ?>
 <!DOCTYPE html>
@@ -8,18 +8,46 @@ $partitions = hashAndWaterMark($records);
   <head>
     <title>Watermarking - Distortion Free</title>
     <style>
-      table,td,th { 
-        border: 1px solid black; 
-        margin:10px; 
-        padding:5px; 
-        border-collapse:collapse 
-      }
-      .table-container { width:1000px; min-height: 500px; }
-      table { float : left; max-width: 250px; }
-      h1 { text-align: center; }
-      thead tr, tbody tr { display: inline-table; width: 100%; }
-      tbody { display:block; max-height:400px; overflow:auto; }
-      thead { background: lightgrey; display:block; }
+    table,td,th { 
+      border: 1px solid black; 
+      margin:10px; 
+      padding:5px; 
+      border-collapse:collapse 
+    }
+    .timestamp {
+      text-align: center;
+      clear: both;
+      border: 1px dashed grey;
+      margin: 0px;
+      width: 98vw;
+      background-color: gainsboro;
+      color: black;
+      padding: 5px;
+    }
+    .table-container {
+      width:1000px;
+      min-height: 500px;
+    }
+    table {
+      float : left;
+      max-width: 250px;
+    }
+    h1 {
+      text-align: center;
+    }
+    thead tr, tbody tr {
+      display: inline-table;
+      width: 100%;
+    }
+    tbody {
+      display:block;
+      max-height:400px;
+      overflow:auto;
+    }
+    thead {
+      background: lightgrey;
+      display:block;
+    }
     </style>
   </head>
   <body>
@@ -73,6 +101,7 @@ $partitions = hashAndWaterMark($records);
       $new_partitions = hashAndWaterMark($new_database);
 
       # GENERATING WATERMARK TABLE
+      $time = microtime(true);
       $extracted_watermark = array();
       foreach($partitions as $index => $data) {
         $increasingCount = 0;
@@ -98,6 +127,7 @@ $partitions = hashAndWaterMark($records);
         }
       }
       ksort($extracted_watermark);
+      echo "<div class='timestamp'>Watermark Extraction Time : ".(microtime(true)-$time) ." s</div>"
    ?>
   <p> Now we count the number of 1s and 0s obtained by checking the order of hashes in new database. This will help us extract the watermark </p>
 
